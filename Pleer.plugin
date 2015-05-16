@@ -1,0 +1,10 @@
+[Plugin]
+Loader=python3
+Module=pleer
+IAge=1
+Depends=rb
+Name=Pleer
+Description=Search, browse, and listen to Pleer music.
+Authors=KeizerDev
+Copyright=Copyright © 2015 KeizerDev
+Website=http://github.com/KeizerDev
