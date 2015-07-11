@@ -4,7 +4,6 @@ from gi.repository import GObject, Gio, Peas, Gtk, GdkPixbuf
 from gi.repository import RB
 
 from PleerSource import PleerSource
-from PleerFunctions import getMp3URL
 
 class PleerEntryType(RB.RhythmDBEntryType):
 	def __init__(self):
@@ -12,12 +11,6 @@ class PleerEntryType(RB.RhythmDBEntryType):
 
 	def do_can_sync_metadata(self, entry):
 		return True
-
-	def do_get_playback_uri(self, entry):
-		pleerFileLink = entry.dup_string(RB.RhythmDBPropType.LOCATION)
-		mp3URL = getMp3URL(pleerFileLink)
-
-		return(mp3URL)
 
 class Pleer(GObject.Object, Peas.Activatable):
 	gtype_name = 'Pleer'

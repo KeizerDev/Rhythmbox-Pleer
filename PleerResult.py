@@ -4,4 +4,4 @@ class PleerResult:
 		self.title = entry['song']
 		self.artist = entry['artist']
 		self.duration = int(entry['duration'])
-		self.url = entry['link'] # /!\ Not a URL at this point of the program execution /!\
+		self.url = entry['link']
