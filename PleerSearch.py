@@ -13,6 +13,7 @@ import PleerFunctions
 class PleerSearch:
 	def __init__(self, search_term, db, entry_type):
 		self.search_term = search_term
+		self.curr_page = 1
 		self.db = db
 		self.entry_type = entry_type
 		self.search_complete = False
@@ -38,7 +39,7 @@ class PleerSearch:
 		self.query_model.add_entry(entry, -1)
 		self.db.commit()
 
-	# Called when HTTP request is done (See start() method)
+	# Called when HTTP request is done (See start()/loadMore() methods)
 	def on_search_results_recieved(self, data):
 		# Parse and fetch songs list
 		tracks = PleerFunctions.parse_tracks(data)
@@ -50,7 +51,15 @@ class PleerSearch:
 
 	# Button "Search button" callback function
 	def start(self):
-		path = 'http://pleer.com/browser-extension/search?q='+ self.search_term
+		path = 'http://pleer.com/browser-extension/search?q='+ self.search_term +'&page='+ str(self.curr_page)
+		self.curr_page += 1
+		loader = rb.Loader()
+		loader.get_url(path, self.on_search_results_recieved)
+
+	# Button "Load more" callback function
+	def loadMore(self):
+		path = 'http://pleer.com/browser-extension/search?q='+ self.search_term +'&page='+ str(self.curr_page)
+		self.curr_page += 1
 		loader = rb.Loader()
 		loader.get_url(path, self.on_search_results_recieved)
 

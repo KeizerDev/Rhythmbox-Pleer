@@ -20,7 +20,6 @@ class PleerSource(RB.Source):
 		entry_view.append_column(RB.EntryViewColumn.TITLE, True)
 		entry_view.append_column(RB.EntryViewColumn.ARTIST, True)
 		entry_view.append_column(RB.EntryViewColumn.DURATION, True)
-		entry_view.set_sorting_order("Title", Gtk.SortType.ASCENDING)
 		entry_view.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
 		self.entry_view = entry_view
 		
@@ -33,12 +32,19 @@ class PleerSource(RB.Source):
 		search_button = Gtk.Button("Search")
 		search_button.connect("clicked", self.on_search_button_clicked)
 		
+		loadMore_button = Gtk.Button('Load more')
+		loadMore_button.connect('clicked', self.on_loadMore_button_clicked)
+		loadMore_button.set_sensitive(False)
+		
 		search_button.set_can_default(True)
 		self.search_button = search_button
+		
+		self.loadMore_button = loadMore_button
 		
 		hbox = Gtk.HBox()
 		hbox.pack_start(search_entry, False, False, 0)
 		hbox.pack_start(search_button, False, False, 5)
+		hbox.pack_start(loadMore_button, False, False, 5)
 		
 		vbox = Gtk.VBox()
 		vbox.pack_start(hbox, False, False, 0)
@@ -46,7 +52,6 @@ class PleerSource(RB.Source):
 		
 		self.pack_start(vbox, True, True, 0)
 		self.show_all()
-		
 		#shell.get_ui_manager().ensure_update()
 		self.initialised = True
 
@@ -112,9 +117,16 @@ class PleerSource(RB.Source):
 		entry = self.search_entry
 		if entry.get_text():
 			search = PleerSearch(entry.get_text(), self.props.shell.props.db, self.props.entry_type)
+			self.search = search
+			
+			self.loadMore_button.set_sensitive(True)
 			# Start the search asynchronously
 			GLib.idle_add(search.start, priority=GLib.PRIORITY_HIGH_IDLE)
+			
 			self.props.query_model = search.query_model
 			self.entry_view.set_model(self.props.query_model)
+	
+	def on_loadMore_button_clicked(self, button):
+		self.search.loadMore()
 
 GObject.type_register(PleerSource)
