@@ -2,6 +2,7 @@ from gi.repository import GObject, Gio, GLib, Peas, Gtk
 from gi.repository import RB
 
 from PleerSearch import PleerSearch
+from PleerView import PleerView
 
 class PleerSource(RB.Source):
 	def __init__(self, **kwargs):
@@ -16,12 +17,8 @@ class PleerSource(RB.Source):
 	def initialise(self):
 		shell = self.props.shell
 		
-		entry_view = RB.EntryView.new(db=shell.props.db, shell_player=shell.props.shell_player, is_drag_source=True, is_drag_dest=False)
-		entry_view.append_column(RB.EntryViewColumn.TITLE, True)
-		entry_view.append_column(RB.EntryViewColumn.ARTIST, True)
-		entry_view.append_column(RB.EntryViewColumn.DURATION, True)
-		entry_view.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
-		self.entry_view = entry_view
+		self.entry_view = PleerView(db=shell.props.db, shell_player=shell.props.shell_player, is_drag_source=True, is_drag_dest=False)
+		self.entry_view.initialise(source=self)
 		
 		search_entry = Gtk.Entry()
 		search_entry.set_width_chars(100)
@@ -48,7 +45,7 @@ class PleerSource(RB.Source):
 		
 		vbox = Gtk.VBox()
 		vbox.pack_start(hbox, False, False, 0)
-		vbox.pack_start(entry_view, True, True, 5)
+		vbox.pack_start(self.entry_view, True, True, 5)
 		
 		self.pack_start(vbox, True, True, 0)
 		self.show_all()
@@ -125,7 +122,7 @@ class PleerSource(RB.Source):
 			
 			self.props.query_model = search.query_model
 			self.entry_view.set_model(self.props.query_model)
-	
+
 	def on_loadMore_button_clicked(self, button):
 		self.search.loadMore()
 
