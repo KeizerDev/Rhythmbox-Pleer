@@ -81,7 +81,7 @@ class PleerSource(RB.Source):
 		return self.do_get_status()
 
 	def do_get_status(self, status, progress_text, progress):
-		if self.downloading:
+		if hasattr(self, 'downloading') and self.downloading:
 			status = 'Downloading 1 file : '+ self.downloading_filename +' in '+ self.downloading_directory
 		elif hasattr(self, 'error_msg'):
 			status = self.error_msg
