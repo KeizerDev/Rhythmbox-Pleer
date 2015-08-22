@@ -22,9 +22,6 @@ class PleerSource(RB.Source):
 		self.entry_view.initialise(source=self)
 		
 		self.downloading = False
-		self.downloading_directory = self.props.settings.get_string('dir-download-string')
-		if self.downloading_directory.endswith('/'):
-			self.downloading_directory = self.downloading_directory[:-1]
 		
 		search_entry = Gtk.Entry()
 		search_entry.set_width_chars(100)
@@ -100,7 +97,7 @@ class PleerSource(RB.Source):
 
 	def do_impl_can_pause(self):
 		return True
-
+	
 	def on_search_button_clicked(self, button):
 		entry = self.search_entry
 		if entry.get_text():
@@ -119,6 +116,10 @@ class PleerSource(RB.Source):
 	
 	# Handler for Download MenuItem (See PleerView)
 	def download_song(self, menuItem):
+		self.downloading_directory = self.props.settings.get_string('dir-download-string')
+		if self.downloading_directory.endswith('/'):
+			self.downloading_directory = self.downloading_directory[:-1]
+		
 		if os.path.isdir(self.downloading_directory):
 			selectedEntry = self.entry_view.get_selected_entries()[0]
 			songArtist = selectedEntry.get_string(RB.RhythmDBPropType.ARTIST)
