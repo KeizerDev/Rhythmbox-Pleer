@@ -23,6 +23,7 @@ class PleerView(RB.EntryView):
 	# Called when a row (track) is double-ckicked
 	def do_entry_activated(self, entry):
 		if self.get_selected_entries()[0]:
+			self.props.shell_player.stop() # Prevents RB from crashing (>search, >play, >search same thing, >play other song)
 			self.props.shell_player.play_entry(self.get_selected_entries()[0], self.source)
 	
 	# Called when a row (track) is right-clicked

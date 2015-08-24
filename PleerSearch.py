@@ -43,10 +43,8 @@ class PleerSearch:
 	def on_search_results_recieved(self, data):
 		# Parse and fetch songs list
 		tracks = PleerFunctions.parse_tracks(data)
-		
 		for currTrack in tracks:
 			self.add_entry(PleerResult(currTrack))
-		
 		self.search_complete = True
 
 	# Button "Search button" callback function

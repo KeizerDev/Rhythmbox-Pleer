@@ -23,32 +23,26 @@ class PleerSource(RB.Source):
 		
 		self.downloading = False
 		
-		search_entry = Gtk.Entry()
-		search_entry.set_width_chars(100)
-		search_entry.set_activates_default(True)
-		
-		self.search_entry = search_entry
+		self.search_entry = Gtk.SearchEntry()
+		self.search_entry.set_width_chars(100)
+		self.search_entry.set_activates_default(True)
 		
 		self.dl_progress_bar = Gtk.ProgressBar()
 		self.dl_progress_bar.set_show_text(True)
 		self.dl_progress_bar.set_opacity(0)
 		
-		search_button = Gtk.Button("Search")
-		search_button.connect("clicked", self.on_search_button_clicked)
+		self.search_button = Gtk.Button("Search")
+		self.search_button.connect("clicked", self.on_search_button_clicked)
+		self.search_button.set_can_default(True)
 		
-		loadMore_button = Gtk.Button('Load more')
-		loadMore_button.connect('clicked', self.on_loadMore_button_clicked)
-		loadMore_button.set_sensitive(False)
-		
-		search_button.set_can_default(True)
-		self.search_button = search_button
-		
-		self.loadMore_button = loadMore_button
+		self.loadMore_button = Gtk.Button('Load more')
+		self.loadMore_button.connect('clicked', self.on_loadMore_button_clicked)
+		self.loadMore_button.set_sensitive(False)
 		
 		hbox = Gtk.HBox()
-		hbox.pack_start(search_entry, False, False, 0)
-		hbox.pack_start(search_button, False, False, 5)
-		hbox.pack_start(loadMore_button, False, False, 5)
+		hbox.pack_start(self.search_entry, False, False, 0)
+		hbox.pack_start(self.search_button, False, False, 5)
+		hbox.pack_start(self.loadMore_button, False, False, 5)
 		hbox.pack_start(self.dl_progress_bar, False, False, 5)
 		
 		vbox = Gtk.VBox()
