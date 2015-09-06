@@ -7,7 +7,9 @@ import json
 def parse_tracks(html):
 	""" Parse HTML to retrieve listed tracks """
 	records = json.loads(html.decode('utf8'))
-	matches = []
+	matches = {}
+	matches['total'] = records['found'];
+	matches['tracks'] = []
 	
 	for item in records['tracks'] :
 		details = {
@@ -16,7 +18,7 @@ def parse_tracks(html):
 			'duration': item['length'], 
 			'link': item['file']
 		}
-		matches.append(details)
+		matches['tracks'].append(details)
 	
 	return(matches)
 

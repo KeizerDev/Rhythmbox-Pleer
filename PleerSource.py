@@ -72,10 +72,16 @@ class PleerSource(RB.Source):
 		return self.do_get_status()
 
 	def do_get_status(self, status, progress_text, progress):
+		status = 'Pleer: '
 		if hasattr(self, 'downloading') and self.downloading:
-			status = 'Downloading 1 file : '+ self.downloading_filename +' in '+ self.downloading_directory
+			status += 'Downloading 1 file : '+ self.downloading_filename +' in '+ self.downloading_directory
+		elif hasattr(self, 'search') and isinstance(self.search, PleerSearch):
+			if self.search.is_complete():
+				status += self.search.search_term +' : '+ str(self.search.search_total) +' tracks found'
+			else:
+				status += 'Searching '+ self.search.search_term +'...'
 		elif hasattr(self, 'error_msg'):
-			status = self.error_msg
+			status += self.error_msg
 		else:
 			status = 'Pleer'
 		
@@ -95,14 +101,13 @@ class PleerSource(RB.Source):
 	def on_search_button_clicked(self, button):
 		entry = self.search_entry
 		if entry.get_text():
-			search = PleerSearch(entry.get_text(), self.props.shell.props.db, self.props.entry_type)
-			self.search = search
+			self.search = PleerSearch(entry.get_text(), self.props.shell.props.db, self.props.entry_type)
 			
 			self.loadMore_button.set_sensitive(True)
 			# Start the search asynchronously
-			GLib.idle_add(search.start, priority=GLib.PRIORITY_HIGH_IDLE)
+			GLib.idle_add(self.search.start, priority=GLib.PRIORITY_HIGH_IDLE)
 			
-			self.props.query_model = search.query_model
+			self.props.query_model = self.search.query_model
 			self.entry_view.set_model(self.props.query_model)
 
 	def on_loadMore_button_clicked(self, button):

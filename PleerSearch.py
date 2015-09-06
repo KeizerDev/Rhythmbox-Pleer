@@ -17,6 +17,7 @@ class PleerSearch:
 		self.db = db
 		self.entry_type = entry_type
 		self.search_complete = False
+		self.search_total = 0
 		self.entries_hashes = []
 		self.query_model = RB.RhythmDBQueryModel.new_empty(db)
 
@@ -42,8 +43,9 @@ class PleerSearch:
 	# Called when HTTP request is done (See start()/loadMore() methods)
 	def on_search_results_recieved(self, data):
 		# Parse and fetch songs list
-		tracks = PleerFunctions.parse_tracks(data)
-		for currTrack in tracks:
+		result = PleerFunctions.parse_tracks(data)
+		self.search_total = result['total']
+		for currTrack in result['tracks']:
 			self.add_entry(PleerResult(currTrack))
 		self.search_complete = True
 
