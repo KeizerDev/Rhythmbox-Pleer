@@ -18,6 +18,7 @@ class PleerView(RB.EntryView):
 		self.append_column(RB.EntryViewColumn.TITLE, True)
 		self.append_column(RB.EntryViewColumn.ARTIST, True)
 		self.append_column(RB.EntryViewColumn.DURATION, True)
+		self.append_column(RB.EntryViewColumn.QUALITY, True)
 		self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
 	
 	# Called when a row (track) is double-ckicked
@@ -32,4 +33,4 @@ class PleerView(RB.EntryView):
 			self.popup_menu.popup(None, None, None, None, 0, Gtk.get_current_event_time())
 		
 		return over_entry
-	
+

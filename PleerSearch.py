@@ -37,6 +37,8 @@ class PleerSearch:
 				self.db.entry_set(entry, RB.RhythmDBPropType.DURATION, result.duration)
 			if result.artist:
 				self.db.entry_set(entry, RB.RhythmDBPropType.ARTIST, result.artist)
+			if result.bitrate:
+				self.db.entry_set(entry, RB.RhythmDBPropType.BITRATE, result.bitrate)
 		self.query_model.add_entry(entry, -1)
 		self.db.commit()
 
