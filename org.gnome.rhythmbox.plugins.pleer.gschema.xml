@@ -6,5 +6,10 @@
 			<summary>Folder Pleer downloads in</summary>
 			<description>Bla</description>
 		</key>
+		<key type="s" name="tracksperpage-value">
+			<default>"20"</default>
+			<summary>Number of tracks to display in View</summary>
+			<description>This key is used to set the number of tracks to display in View</description>
+		</key>
 	</schema>
 </schemalist>

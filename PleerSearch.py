@@ -11,9 +11,10 @@ from PleerResult import PleerResult
 import PleerFunctions
 
 class PleerSearch:
-	def __init__(self, search_term, db, entry_type):
+	def __init__(self, search_term, tracks_per_page, db, entry_type):
 		self.search_term = search_term
 		self.curr_page = 1
+		self.tracks_per_page = tracks_per_page
 		self.db = db
 		self.entry_type = entry_type
 		self.search_complete = False
@@ -53,14 +54,14 @@ class PleerSearch:
 
 	# Button "Search button" callback function
 	def start(self):
-		path = 'http://pleer.com/browser-extension/search?q='+ self.search_term +'&page='+ str(self.curr_page)
+		path = 'http://pleer.com/browser-extension/search?q='+ self.search_term +'&limit='+ str(self.tracks_per_page) +'&page='+ str(self.curr_page)
 		self.curr_page += 1
 		loader = rb.Loader()
 		loader.get_url(path, self.on_search_results_recieved)
 
 	# Button "Load more" callback function
 	def loadMore(self):
-		path = 'http://pleer.com/browser-extension/search?q='+ self.search_term +'&page='+ str(self.curr_page)
+		path = 'http://pleer.com/browser-extension/search?q='+ self.search_term +'&limit='+ str(self.tracks_per_page) +'&page='+ str(self.curr_page)
 		self.curr_page += 1
 		loader = rb.Loader()
 		loader.get_url(path, self.on_search_results_recieved)

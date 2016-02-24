@@ -54,6 +54,29 @@
 		</child>
 		
 		<child>
+			<object class="GtkAlignment" id="tracksperpagealignment">
+				<property name="visible">True</property>
+				<property name="can_focus">False</property>
+				<child>
+					<object class="GtkHBox" id="tracksperpagehbox">
+						<child>
+							<object class="GtkLabel" id="tracksperpagelabel">
+								<property name="visible">True</property>
+								<property name="label">Tracks per page [1-100]: </property>
+							</object>
+						</child>
+						<child>
+							<object class="GtkEntry" id="tracksperpage_string">
+								<property name="visible">True</property>
+								<property name="can_focus">True</property>
+							</object>
+						</child>
+					</object>
+				</child>
+			</object>
+		</child>
+		
+		<child>
 			<object class="GtkCheckButton" id="opt_searchInPopup">
 				<property name="label">_Add Search artist in context menu</property>
 				<property name="visible">True</property>

@@ -77,7 +77,10 @@ class PleerSource(RB.Source):
 			status += 'Downloading 1 file : '+ self.downloading_filename +' in '+ self.downloading_directory
 		elif hasattr(self, 'search') and isinstance(self.search, PleerSearch):
 			if self.search.is_complete():
-				status += self.search.search_term +' : '+ str(self.search.search_total) +' tracks found'
+				status += self.search.search_term +' : '+ str(self.search.search_total) +' tracks found | '
+				tracksperpage_value = self.props.settings.get_string('tracksperpage-value')
+				displayedTracks = self.search.search_total if int(tracksperpage_value) > self.search.search_total else tracksperpage_value
+				status += 'Displaying '+ str(displayedTracks)
 			else:
 				status += 'Searching '+ self.search.search_term +'...'
 		elif hasattr(self, 'error_msg'):
@@ -101,7 +104,8 @@ class PleerSource(RB.Source):
 	def on_search_button_clicked(self, button):
 		entry = self.search_entry
 		if entry.get_text():
-			self.search = PleerSearch(entry.get_text(), self.props.shell.props.db, self.props.entry_type)
+			tracksperpage_param = self.props.settings.get_string('tracksperpage-value')
+			self.search = PleerSearch(entry.get_text(), tracksperpage_param, self.props.shell.props.db, self.props.entry_type)
 			
 			self.loadMore_button.set_sensitive(True)
 			# Start the search asynchronously

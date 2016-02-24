@@ -19,11 +19,15 @@ class PleerConfig(GObject.Object, PeasGtk.Configurable):
 		
 		self.dir_dl = self.builder.get_object('dir_download_string')
 		self.dir_bt = self.builder.get_object('dir_download_bt')
+		self.tracksperpage = self.builder.get_object('tracksperpage_string')
 		
 		self.dir_dl.connect('changed', self.on_dirDownloadString_changed)
 		self.settings.bind('dir-download-string', self.dir_dl, 'text', Gio.SettingsBindFlags.GET)
 		
 		self.dir_bt.connect('clicked', self.on_dirDownloadBt_clicked)
+		
+		self.tracksperpage.connect('changed', self.on_tracksperpage_changed)
+		self.settings.bind('tracksperpage-value', self.tracksperpage, 'text', Gio.SettingsBindFlags.GET)
 		
 		content = self.builder.get_object('pleer-prefs')
 
@@ -31,7 +35,12 @@ class PleerConfig(GObject.Object, PeasGtk.Configurable):
 	
 	def on_dirDownloadString_changed(self, widget):
 		self.settings.set_string('dir-download-string', self.dir_dl.get_text())
-		
+	
+	def on_tracksperpage_changed(self, widget):
+		typedValue = self.tracksperpage.get_text()
+		self.tracksperpage.set_text(''.join([c for c in typedValue if c in '0123456789']))
+		self.settings.set_string('tracksperpage-value', self.tracksperpage.get_text())
+	
 	def on_dirDownloadBt_clicked(self, widget):
 		
 		def response_handler(widget, response):
